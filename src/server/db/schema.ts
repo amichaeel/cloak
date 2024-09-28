@@ -27,6 +27,7 @@ export const users = pgTable('user', {
   password: varchar('password', { length: 255 }).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
+
 export const accounts = createTable(
   "account",
   {
@@ -55,13 +56,25 @@ export const accounts = createTable(
     userIdIdx: index("account_user_id_idx").on(account.userId),
   })
 );
+// Sessions Table (for session management)
+export const sessions = pgTable('session', {
+  sessionToken: varchar('session_token', { length: 255 }).primaryKey(),  // Now it's a primary key
+  userId: uuid('user_id').notNull().references(() => users.id),  // Link to users table
+  expires: timestamp('expires', { withTimezone: true }).notNull(),
+});
+
+// Verification Tokens Table (for email verification or password reset)
+export const verificationTokens = pgTable('verification_token', {
+  identifier: varchar('identifier', { length: 255 }).notNull(),
+  token: varchar('token', { length: 255 }).notNull(),  // Remove the primaryKey constraint
+  expires: timestamp('expires', { withTimezone: true }).notNull(),
+});
 // Forms Table
-export const forms = createTable('form', {
-  id: serial('id').primaryKey(),
-  title: varchar('title', { length: 255 }).notNull(),
-  userId: integer('user_id').notNull().references(() => users.id),  // Link to Users
-  createdAt: timestamp('created_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull(),
-  schema: jsonb('schema').notNull(),  // Store the form structure as JSON
+export const forms = pgTable("forms", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  userId: integer("user_id").notNull(),  // Correct field for user reference
+  createdAt: timestamp("created_at", { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
 // FormResponses Table

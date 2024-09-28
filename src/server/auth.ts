@@ -8,7 +8,7 @@ import { type Adapter } from "next-auth/adapters";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
-import { users } from "~/server/db/schema";  // Correct import for the users table
+import { accounts, sessions, users, verificationTokens } from "~/server/db/schema";  // Correct import for the users table
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -35,7 +35,10 @@ export const authOptions: NextAuthOptions = {
     },
   },
   adapter: DrizzleAdapter(db, {
-    usersTable: users,  // Ensure this references your `users` table
+    usersTable: users,
+    accountsTable: accounts,   // Add the accounts table
+    sessionsTable: sessions,   // Add the sessions table
+    verificationTokensTable: verificationTokens,  // Ensure this references your `users` table
   }) as Adapter,
   providers: [
     // Add your authentication providers here, such as Discord, Google, etc.
