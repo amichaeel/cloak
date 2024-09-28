@@ -2,6 +2,8 @@ import { relations, sql } from "drizzle-orm";
 import {
   index,
   integer,
+  jsonb,
+  pgTable,
   pgTableCreator,
   primaryKey,
   serial,
@@ -109,6 +111,22 @@ export const sessions = createTable(
     userIdIdx: index("session_user_id_idx").on(session.userId),
   })
 );
+
+// Forms Table
+export const forms = pgTable("forms", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  userId: integer("user_id").notNull(),  // Correct field for user reference
+  createdAt: timestamp("created_at", { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
+// FormResponses Table
+export const formResponses = createTable('form_response', {
+  id: serial('id').primaryKey(),
+  formId: integer('form_id').notNull().references(() => forms.id),  // Link to Forms
+  createdAt: timestamp('created_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+  responseData: jsonb('response_data').notNull(),  // Store the form response data as JSON
+});
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
