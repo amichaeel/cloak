@@ -1,20 +1,25 @@
-import { relations, sql } from "drizzle-orm";
+import { InferModel, relations, sql } from "drizzle-orm";
 import {
   integer,
   serial,
   varchar,
   timestamp,
   jsonb,
-  pgTableCreator
+  pgTableCreator,
+  pgTable,
+  uuid
 } from "drizzle-orm/pg-core";
 
-export const createTable = pgTableCreator((name) => `cloak-db`);
+export const createTable = pgTableCreator((name) => name);  
+
 
 // Users Table
-export const users = createTable('user', {
-  id: serial('id').primaryKey(),
-  userName: varchar('user_name', { length: 255 }).notNull(),
+export const users = pgTable('user', {
+  id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),  // Use UUID for the id
+  name: varchar('name', { length: 255 }),  // Add 'name' for NextAuth compatibility
   email: varchar('email', { length: 255 }).notNull(),
+  emailVerified: timestamp('email_verified', { withTimezone: true }),  // Add 'emailVerified'
+  image: varchar('image', { length: 255 }),  // Add 'image' field
   password: varchar('password', { length: 255 }).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
@@ -48,3 +53,4 @@ export const formsRelations = relations(forms, ({ one, many }) => ({
 export const formResponsesRelations = relations(formResponses, ({ one }) => ({
   form: one(forms, { fields: [formResponses.formId], references: [forms.id] }), // Each response belongs to one form
 }));
+
