@@ -10,8 +10,6 @@ import { type Adapter } from "next-auth/adapters";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import {
-  accounts,
-  sessions,
   users,
   verificationTokens,
 } from "~/server/db/schema";
@@ -44,18 +42,10 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    
   },
   adapter: DrizzleAdapter(db, {
     usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
     verificationTokensTable: verificationTokens,
   }) as Adapter,
   providers: [

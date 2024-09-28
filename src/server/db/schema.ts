@@ -8,7 +8,7 @@ import {
   pgTableCreator
 } from "drizzle-orm/pg-core";
 
-export const createTable = pgTableCreator((name) => `cloak`);
+export const createTable = pgTableCreator((name) => `cloak-db`);
 
 // Users Table
 export const users = createTable('user', {
