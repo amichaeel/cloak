@@ -1,16 +1,16 @@
 // ~/components/fields/number.tsx
 
-import React from "react"
-import { Input } from "~/components/ui/input"
+import React from "react";
+import { Input } from "~/components/ui/input";
 
 interface NumberInputProps {
-  label?: string
-  name?: string
-  value?: number
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onLabelChange?: (label: string) => void
-  isBuilder?: boolean
-  required?: boolean
+  label?: string;
+  name?: string;
+  value?: number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onLabelChange?: (label: string) => void;
+  isBuilder?: boolean;
+  required?: boolean;
 }
 
 export const NumberInput: React.FC<NumberInputProps> = ({
@@ -31,7 +31,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
           value={label}
           onChange={(e) => onLabelChange && onLabelChange(e.target.value)}
           placeholder="Question"
-          className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
+          className="label-input mb-2 block w-full rounded-lg bg-neutral-800 p-2 focus:bg-neutral-700 focus:outline-none"
         />
       ) : (
         // Static label for end-users
@@ -51,5 +51,5 @@ export const NumberInput: React.FC<NumberInputProps> = ({
         required={required && !isBuilder} // Apply 'required' attribute for end-users
       />
     </div>
-  )
-}
+  );
+};
