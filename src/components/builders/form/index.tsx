@@ -1,50 +1,65 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { TextInput } from "~/components/fields/input"
-import { TextArea } from "~/components/fields/textarea"
-import { NumberInput } from "~/components/fields/number"
-import { FieldSelector } from "~/components/fields/fieldselector"
-import { Cross1Icon } from "@radix-ui/react-icons"
-import { Switch } from "~/components/ui/switch"
-import { CheckboxInput } from "~/components/fields/checkbox"
-import { SliderInput } from "~/components/fields/slider"
-import { SelectInput } from "~/components/fields/select"
-import { DropdownInput } from "~/components/fields/dropdown"
-import { Button } from "~/components/ui/button"
-import type { Option } from "~/types/option"
+import React, { useState } from "react";
+import { TextInput } from "~/components/fields/input";
+import { TextArea } from "~/components/fields/textarea";
+import { NumberInput } from "~/components/fields/number";
+import { FieldSelector } from "~/components/fields/fieldselector";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { Switch } from "~/components/ui/switch";
+import { CheckboxInput } from "~/components/fields/checkbox";
+import { SliderInput } from "~/components/fields/slider";
+import { SelectInput } from "~/components/fields/select";
+import { DropdownInput } from "~/components/fields/dropdown";
+import { Button } from "~/components/ui/button";
+import type { Option } from "~/types/option";
 
 interface FieldConfig {
-  id: string
-  type: string
-  props: object
+  id: string;
+  type: string;
+  props: object;
 }
 
+interface FormData {
+  title: string;
+  description: string;
+  fields: FieldConfig[];
+}
 
 const FormBuilder: React.FC = () => {
-  const [formTitle, setFormTitle] = useState<string>("Untitled Form")
-  const [formDescription, setFormDescription] = useState<string>("")
+  const [formTitle, setFormTitle] = useState<string>("Untitled Form");
+  const [formDescription, setFormDescription] = useState<string>("");
 
-  const [fields, setFields] = useState<FieldConfig[]>([])
+  const [fields, setFields] = useState<FieldConfig[]>([]);
+  const [formOutput, setFormOutput] = useState<FormData | null>(null);
+
+  const handleSubmit = () => {
+    const currentFormData: FormData = {
+      title: formTitle,
+      description: formDescription,
+      fields: fields,
+    };
+    setFormOutput(currentFormData);
+  };
 
   const addField = (type: string) => {
-    const id = Date.now().toString()
+    const id = Date.now().toString();
     const baseProps = {
       id,
       name: `${type}_${fields.length + 1}`,
       required: false,
-    }
+    };
 
-    let specificProps = {}
+    let specificProps = {};
 
     // Initialize specific props for date input
     if (type === "date") {
       specificProps = {
         value: undefined,
         onChange: (date: Date | undefined) => {
-          updateFieldProps(id, { value: date })
+          updateFieldProps(id, { value: date });
         },
-      }
+      };
     }
 
     if (type === "checkbox" || type === "select" || type === "dropdown") {
@@ -58,9 +73,9 @@ const FormBuilder: React.FC = () => {
         ],
         selectedOptions: [],
         onOptionsChange: (options: Option) => {
-          updateFieldProps(id, { options })
+          updateFieldProps(id, { options });
         },
-      }
+      };
     }
 
     const newField: FieldConfig = {
@@ -73,28 +88,28 @@ const FormBuilder: React.FC = () => {
           // Placeholder for onChange, not used in builder
         },
       },
-    }
+    };
 
-    setFields([...fields, newField])
-  }
+    setFields([...fields, newField]);
+  };
 
   const updateFieldProps = (id: string, newProps: object) => {
     setFields((prevFields: FieldConfig[]) =>
       prevFields.map((field: FieldConfig) =>
         field.id === id
           ? { ...field, props: { ...field.props, ...newProps } }
-          : field
-      )
-    )
-  }
+          : field,
+      ),
+    );
+  };
 
   const removeField = (id: string) => {
-    setFields(fields.filter((field) => field.id !== id))
-  }
+    setFields(fields.filter((field) => field.id !== id));
+  };
 
   return (
     <div className="form-builder space-y-6">
-      <div className="border p-2 rounded">
+      <div className="rounded border p-2">
         {/* Form Title */}
         <div className="mb-4">
           <input
@@ -102,7 +117,7 @@ const FormBuilder: React.FC = () => {
             value={formTitle}
             onChange={(e) => setFormTitle(e.target.value)}
             placeholder="Form Title"
-            className="text-2xl font-bold w-full border-b border-gray-300 focus:border-black focus:outline-none"
+            className="w-full border-b border-gray-300 text-2xl font-bold focus:border-black focus:outline-none"
           />
         </div>
 
@@ -124,7 +139,7 @@ const FormBuilder: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
+              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
             >
               <TextInput
                 {...field.props}
@@ -133,7 +148,7 @@ const FormBuilder: React.FC = () => {
                   updateFieldProps(field.id, { label: newLabel })
                 }
               />
-              <div className="flex justify-between items-center mt-2">
+              <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <label
                     htmlFor={`required-${field.id}`}
@@ -153,17 +168,18 @@ const FormBuilder: React.FC = () => {
                   variant="ghost"
                   size="icon"
                   className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
+                  onClick={() => removeField(field.id)}
+                >
                   <Cross1Icon />
                 </Button>
               </div>
             </div>
-          )
+          );
         } else if (field.type === "textarea") {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
+              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
             >
               <TextArea
                 {...field.props}
@@ -172,7 +188,7 @@ const FormBuilder: React.FC = () => {
                   updateFieldProps(field.id, { label: newLabel })
                 }
               />
-              <div className="flex justify-between items-center mt-2">
+              <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <label
                     htmlFor={`required-${field.id}`}
@@ -192,17 +208,18 @@ const FormBuilder: React.FC = () => {
                   variant="ghost"
                   size="icon"
                   className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
+                  onClick={() => removeField(field.id)}
+                >
                   <Cross1Icon />
                 </Button>
               </div>
             </div>
-          )
+          );
         } else if (field.type === "number") {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
+              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
             >
               <NumberInput
                 {...field.props}
@@ -211,7 +228,7 @@ const FormBuilder: React.FC = () => {
                   updateFieldProps(field.id, { label: newLabel })
                 }
               />
-              <div className="flex justify-between items-center mt-2">
+              <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <label
                     htmlFor={`required-${field.id}`}
@@ -231,17 +248,18 @@ const FormBuilder: React.FC = () => {
                   variant="ghost"
                   size="icon"
                   className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
+                  onClick={() => removeField(field.id)}
+                >
                   <Cross1Icon />
                 </Button>
               </div>
             </div>
-          )
+          );
         } else if (field.type === "checkbox") {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
+              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
             >
               <CheckboxInput
                 {...field.props}
@@ -253,7 +271,7 @@ const FormBuilder: React.FC = () => {
                   updateFieldProps(field.id, { options })
                 }
               />
-              <div className="flex justify-between items-center mt-2">
+              <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <label
                     htmlFor={`required-${field.id}`}
@@ -273,17 +291,18 @@ const FormBuilder: React.FC = () => {
                   variant="ghost"
                   size="icon"
                   className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
+                  onClick={() => removeField(field.id)}
+                >
                   <Cross1Icon />
                 </Button>
               </div>
             </div>
-          )
+          );
         } else if (field.type === "slider") {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
+              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
             >
               <SliderInput
                 {...field.props}
@@ -295,7 +314,7 @@ const FormBuilder: React.FC = () => {
                   updateFieldProps(field.id, settings)
                 }
               />
-              <div className="flex justify-between items-center mt-2">
+              <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <label
                     htmlFor={`required-${field.id}`}
@@ -315,17 +334,18 @@ const FormBuilder: React.FC = () => {
                   variant="ghost"
                   size="icon"
                   className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
+                  onClick={() => removeField(field.id)}
+                >
                   <Cross1Icon />
                 </Button>
               </div>
             </div>
-          )
+          );
         } else if (field.type === "select") {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
+              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
             >
               <SelectInput
                 {...field.props}
@@ -337,7 +357,7 @@ const FormBuilder: React.FC = () => {
                   updateFieldProps(field.id, { options })
                 }
               />
-              <div className="flex justify-between items-center mt-2">
+              <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <label
                     htmlFor={`required-${field.id}`}
@@ -357,17 +377,18 @@ const FormBuilder: React.FC = () => {
                   variant="ghost"
                   size="icon"
                   className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
+                  onClick={() => removeField(field.id)}
+                >
                   <Cross1Icon />
                 </Button>
               </div>
             </div>
-          )
+          );
         } else if (field.type === "dropdown") {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
+              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
             >
               <DropdownInput
                 {...field.props}
@@ -376,7 +397,7 @@ const FormBuilder: React.FC = () => {
                   updateFieldProps(field.id, { label: newLabel })
                 }
               />
-              <div className="flex justify-between items-center mt-2">
+              <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <label
                     htmlFor={`required-${field.id}`}
@@ -396,22 +417,38 @@ const FormBuilder: React.FC = () => {
                   variant="ghost"
                   size="icon"
                   className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
+                  onClick={() => removeField(field.id)}
+                >
                   <Cross1Icon />
                 </Button>
               </div>
             </div>
-          )
+          );
         }
-        return null
+        return null;
       })}
 
       {/* Field Selector at the Bottom */}
-      <div className="flex justify-center items-center">
+      <div className="flex items-center justify-center">
         <FieldSelector onAddField={addField} />
       </div>
-    </div>
-  )
-}
 
-export default FormBuilder
+      {/* Submit Button */}
+      <div className="flex items-center justify-center">
+        <Button onClick={() => handleSubmit()}>Submit Form</Button>
+      </div>
+
+      {/* Form Data Output */}
+      {formOutput && (
+        <div className="mt-6 rounded bg-gray-100 p-4">
+          <h3 className="mb-2 text-lg font-semibold">Form Data:</h3>
+          <pre className="overflow-x-auto whitespace-pre-wrap">
+            {JSON.stringify(formOutput, null, 2)}
+          </pre>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default FormBuilder;
