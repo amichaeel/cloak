@@ -1,6 +1,8 @@
 // import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { openaiRouter } from "./routers/openai";
+import { formRouter } from "./routers/form";  // Adjust the import path as needed
+
 
 /**
  * This is the primary router for your server.
@@ -8,7 +10,8 @@ import { openaiRouter } from "./routers/openai";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  openai: openaiRouter
+  openai: openaiRouter,
+  form: formRouter
 });
 
 // export type definition of API

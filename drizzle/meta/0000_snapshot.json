@@ -1,11 +1,11 @@
 {
-  "id": "c3ec7eaa-3c37-41a1-b1dc-f9da896cc56b",
+  "id": "48734f19-27b8-4ee5-9887-8ec138cdf0f0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.account": {
-      "name": "account",
+    "public.cloak_account": {
+      "name": "cloak_account",
       "schema": "",
       "columns": {
         "user_id": {
@@ -93,10 +93,10 @@
         }
       },
       "foreignKeys": {
-        "account_user_id_user_id_fk": {
-          "name": "account_user_id_user_id_fk",
-          "tableFrom": "account",
-          "tableTo": "user",
+        "cloak_account_user_id_cloak_user_id_fk": {
+          "name": "cloak_account_user_id_cloak_user_id_fk",
+          "tableFrom": "cloak_account",
+          "tableTo": "cloak_user",
           "columnsFrom": [
             "user_id"
           ],
@@ -108,8 +108,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "account_provider_provider_account_id_pk": {
-          "name": "account_provider_provider_account_id_pk",
+        "cloak_account_provider_provider_account_id_pk": {
+          "name": "cloak_account_provider_provider_account_id_pk",
           "columns": [
             "provider",
             "provider_account_id"
@@ -118,8 +118,8 @@
       },
       "uniqueConstraints": {}
     },
-    "public.form_response": {
-      "name": "form_response",
+    "public.cloak_form_response": {
+      "name": "cloak_form_response",
       "schema": "",
       "columns": {
         "id": {
@@ -150,10 +150,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "form_response_form_id_forms_id_fk": {
-          "name": "form_response_form_id_forms_id_fk",
-          "tableFrom": "form_response",
-          "tableTo": "forms",
+        "cloak_form_response_form_id_cloak_forms_id_fk": {
+          "name": "cloak_form_response_form_id_cloak_forms_id_fk",
+          "tableFrom": "cloak_form_response",
+          "tableTo": "cloak_forms",
           "columnsFrom": [
             "form_id"
           ],
@@ -167,8 +167,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.forms": {
-      "name": "forms",
+    "public.cloak_forms": {
+      "name": "cloak_forms",
       "schema": "",
       "columns": {
         "id": {
@@ -189,21 +189,47 @@
           "primaryKey": false,
           "notNull": true
         },
+        "postData": {
+          "name": "postData",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "CURRENT_TIMESTAMP"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "cloak_forms_created_by_cloak_user_id_fk": {
+          "name": "cloak_forms_created_by_cloak_user_id_fk",
+          "tableFrom": "cloak_forms",
+          "tableTo": "cloak_user",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.session": {
-      "name": "session",
+    "public.cloak_session": {
+      "name": "cloak_session",
       "schema": "",
       "columns": {
         "session_token": {
@@ -214,7 +240,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -225,12 +251,28 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "session_user_id_idx": {
+          "name": "session_user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
-        "session_user_id_user_id_fk": {
-          "name": "session_user_id_user_id_fk",
-          "tableFrom": "session",
-          "tableTo": "user",
+        "cloak_session_user_id_cloak_user_id_fk": {
+          "name": "cloak_session_user_id_cloak_user_id_fk",
+          "tableFrom": "cloak_session",
+          "tableTo": "cloak_user",
           "columnsFrom": [
             "user_id"
           ],
@@ -244,16 +286,15 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.user": {
-      "name": "user",
+    "public.cloak_user": {
+      "name": "cloak_user",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "varchar(255)",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -271,26 +312,14 @@
           "name": "email_verified",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "CURRENT_TIMESTAMP"
         },
         "image": {
           "name": "image",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
-        },
-        "password": {
-          "name": "password",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -298,8 +327,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.verification_token": {
-      "name": "verification_token",
+    "public.cloak_verification_token": {
+      "name": "cloak_verification_token",
       "schema": "",
       "columns": {
         "identifier": {
@@ -323,7 +352,15 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "cloak_verification_token_identifier_token_pk": {
+          "name": "cloak_verification_token_identifier_token_pk",
+          "columns": [
+            "identifier",
+            "token"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     }
   },
