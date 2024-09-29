@@ -43,18 +43,22 @@ const FormBuilder: React.FC = () => {
     };
 
     try {
-      const result = formSubmitMutation.mutate(currentFormData);
+      const result = await formSubmitMutation.mutateAsync(currentFormData);
       setFormOutput(currentFormData);
+      if (typeof result === "object" && result !== null && "id" in result) {
+        setSubmittedFormId(result.id);
+      } else {
+        console.error("Unexpected result format:", result);
+        setSubmittedFormId(null);
+      }
       console.log("Form saved successfully:", result);
-      // You can add a success message or redirect the user here
     } catch (err) {
       if (err instanceof Error) {
         console.error("Error submitting form:", err.message);
-        // You can show an error message to the user here
       } else {
         console.error("Unknown error:", err);
       }
-      // Set formOutput to null or an error object here to indicate failure
+      setSubmittedFormId(null);
     }
   };
 
@@ -461,7 +465,12 @@ const FormBuilder: React.FC = () => {
       {/* Submit Button or Shareable Link */}
       <div className="flex items-center justify-center">
         {submittedFormId === null ? (
-          <Button className="bg-vilet-900 hover:bg-violet-800" onClick={handleSubmit}>Submit Form</Button>
+          <Button
+            className="bg-vilet-900 hover:bg-violet-800"
+            onClick={handleSubmit}
+          >
+            Submit Form
+          </Button>
         ) : (
           <div className="text-center">
             <p className="mb-2 text-green-600">Form submitted successfully!</p>
@@ -480,4 +489,3 @@ const FormBuilder: React.FC = () => {
 };
 
 export default FormBuilder;
-
