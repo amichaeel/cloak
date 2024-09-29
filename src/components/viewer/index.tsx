@@ -58,6 +58,7 @@ const FormViewer: React.FC<{ formConfig: FormConfig }> = ({ formConfig }) => {
 
     switch (type) {
       case "text":
+        
         return fieldWrapper(
           <TextInput
             label={label}
