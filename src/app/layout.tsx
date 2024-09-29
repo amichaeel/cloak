@@ -31,13 +31,6 @@ async function NavBar() {
             />
           </Link>
         </div>
-        <div className="flex items-center space-x-4">
-          {session && (
-            <p className="text-center text-xl font-semibold text-white">
-              Logged in as {session.user?.name}
-            </p>
-          )}
-        </div>
         <Link
           href={session ? "/api/auth/signout" : "/api/auth/signin"}
           className="rounded-full bg-white/10 px-4 py-2 font-semibold text-white no-underline transition hover:bg-white/20"

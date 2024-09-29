@@ -13,17 +13,14 @@ export default async function Home() {
     <HydrateClient>
       <main className="flex min-h-screen flex-col items-center text-white">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <div className="text-center antialiased flex text-5xl font-extrabold tracking-tight sm:text-[5rem]">
+          <div className="text-center text-6xl font-extrabold tracking-tight antialiased sm:text-[5rem]">
             <h1>
-              Welcome to
-            </h1>
-            <h1 className="ml-4 text-gradient">
-              Cloak
+              Welcome to <span className="text-gradient">Cloak</span>
             </h1>
           </div>
-          <p className="max-w-4xl text-center cursor-default text-xl">
+          <p className="max-w-4xl cursor-default text-center text-xl">
             For <b>truly accurate</b> forms, you must promise respondent{" "}
-            <span className="blur-sm transition-all hover:blur-none">
+            <span className="blur-none transition-all md:blur-sm md:hover:blur-none">
               anonymity.
             </span>
           </p>
