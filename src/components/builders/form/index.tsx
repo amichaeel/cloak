@@ -453,20 +453,11 @@ const FormBuilder: React.FC = () => {
         <FieldSelector onAddField={addField} />
       </div>
 
-      {/* Submit Button */}
-      <div className="bg-purp flex items-center justify-center">
-        <Button
-          className="bg-violet-900 hover:bg-violet-800"
-          onClick={() => handleSubmit()}
-        >
-          Submit Form
-        </Button>
-      </div>
-      {/* Submit Button or Shareable Link */}
+{/* Submit Button or Shareable Link */}
       <div className="flex items-center justify-center">
         {submittedFormId === null ? (
           <Button
-            className="bg-vilet-900 hover:bg-violet-800"
+            className="bg-violet-900 hover:bg-violet-800"
             onClick={handleSubmit}
           >
             Submit Form
@@ -474,14 +465,22 @@ const FormBuilder: React.FC = () => {
         ) : (
           <div className="text-center">
             <p className="mb-2 text-green-600">Form submitted successfully!</p>
-            <a
-              href={`/form/${submittedFormId}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Button
+              className="bg-violet-900 hover:bg-violet-800"
+              asChild
             >
-              View and share your form
-            </a>
+              <Link
+                href={`/form/${submittedFormId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                passHref
+              >
+                View and share your form
+              </Link>
+            </Button>
           </div>
+        )}
+      </div>
         )}
       </div>
     </div>
