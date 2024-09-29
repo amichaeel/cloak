@@ -14,6 +14,7 @@ import { DropdownInput } from "~/components/fields/dropdown";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import type { Option } from "~/types/option";
+import Link from "next/link";
 
 export interface FieldConfig {
   id: string;
@@ -453,7 +454,7 @@ const FormBuilder: React.FC = () => {
         <FieldSelector onAddField={addField} />
       </div>
 
-{/* Submit Button or Shareable Link */}
+      {/* Submit Button or Shareable Link */}
       <div className="flex items-center justify-center">
         {submittedFormId === null ? (
           <Button
@@ -465,10 +466,7 @@ const FormBuilder: React.FC = () => {
         ) : (
           <div className="text-center">
             <p className="mb-2 text-green-600">Form submitted successfully!</p>
-            <Button
-              className="bg-violet-900 hover:bg-violet-800"
-              asChild
-            >
+            <Button className="bg-violet-900 hover:bg-violet-800" asChild>
               <Link
                 href={`/form/${submittedFormId}`}
                 target="_blank"
@@ -479,8 +477,6 @@ const FormBuilder: React.FC = () => {
               </Link>
             </Button>
           </div>
-        )}
-      </div>
         )}
       </div>
     </div>
