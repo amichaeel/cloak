@@ -457,6 +457,23 @@ const FormBuilder: React.FC = () => {
           Submit Form
         </Button>
       </div>
+      {/* Submit Button or Shareable Link */}
+      <div className="flex items-center justify-center">
+        {submittedFormId === null ? (
+          <Button className="bg-vilet-900 hover:bg-violet-800" onClick={handleSubmit}>Submit Form</Button>
+        ) : (
+          <div className="text-center">
+            <p className="mb-2 text-green-600">Form submitted successfully!</p>
+            <a
+              href={`/form/${submittedFormId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View and share your form
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
