@@ -1,5 +1,3 @@
-// src/components/FormViewer.tsx
-
 "use client";
 
 import React, { useState } from "react";
@@ -40,6 +38,8 @@ type FormDataType = Record<string, string | number | string[] | undefined | numb
 
 const FormViewer: React.FC<{ formConfig: FormConfig }> = ({ formConfig }) => {
   const [formData, setFormData] = useState<FormDataType>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleInputChange = (name: string, value: string | number | string[]) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -58,7 +58,6 @@ const FormViewer: React.FC<{ formConfig: FormConfig }> = ({ formConfig }) => {
 
     switch (type) {
       case "text":
-        
         return fieldWrapper(
           <TextInput
             label={label}
@@ -136,11 +135,32 @@ const FormViewer: React.FC<{ formConfig: FormConfig }> = ({ formConfig }) => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate an API call
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     console.log("Form submitted:", formData);
-    // Handle form submission logic here
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+
+    // Reset form after 3 seconds
+    setTimeout(() => {
+      setFormData({});
+      setIsSubmitted(false);
+    }, 10000000000);
   };
+
+  if (isSubmitted) {
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <h1 className="text-2xl font-bold mb-2">Thank you!</h1>
+        <p className="mb-6">Your form has been successfully submitted.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -150,9 +170,11 @@ const FormViewer: React.FC<{ formConfig: FormConfig }> = ({ formConfig }) => {
         {formConfig.fields.map((field) => renderField(field))}
         <button
           type="submit"
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className={`mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          disabled={isSubmitting}
         >
-          Submit
+          {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>
       </form>
     </div>
