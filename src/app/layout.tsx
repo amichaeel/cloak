@@ -35,7 +35,19 @@ async function NavBar() {
           href={session ? "/api/auth/signout" : "/api/auth/signin"}
           className="rounded-full bg-white/10 px-4 py-2 font-semibold text-white no-underline transition hover:bg-white/20"
         >
-          {session ? "Sign out" : "Sign in"}
+          {session ? (
+            <Image
+              width={24}
+              height={24}
+              src={
+                session.user.image ? session.user.image : "/cloak-logo-alt.svg"
+              }
+              alt="Profile settings"
+              className="rounded-full"
+            ></Image>
+          ) : (
+            "Sign in"
+          )}
         </Link>
       </nav>
     </div>
