@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import React from "react"
-import { OptionsEditor } from "~/components/fields/optionseditor"
+import React from "react";
+import { OptionsEditor } from "~/components/fields/optionseditor";
 
 interface Option {
-  id: string
-  value: string
-  label: string
+  id: string;
+  value: string;
+  label: string;
 }
 
 interface SelectInputProps {
-  label?: string
-  name?: string
-  value?: string
-  options?: Option[]
-  onChange?: (value: string) => void
-  onLabelChange?: (label: string) => void
-  onOptionsChange?: (options: Option[]) => void
-  isBuilder?: boolean
-  required?: boolean
+  label?: string;
+  name?: string;
+  value?: string;
+  options?: Option[];
+  onChange?: (value: string) => void;
+  onLabelChange?: (label: string) => void;
+  onOptionsChange?: (options: Option[]) => void;
+  isBuilder?: boolean;
+  required?: boolean;
 }
 
 export const SelectInput: React.FC<SelectInputProps> = ({
@@ -42,7 +42,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
             value={label}
             onChange={(e) => onLabelChange && onLabelChange(e.target.value)}
             placeholder="Question"
-            className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
+            className="label-input mb-2 block w-full rounded-lg bg-neutral-800 p-2 focus:bg-neutral-700 focus:outline-none"
             required={required}
           />
           {/* Options Editor */}
@@ -63,7 +63,10 @@ export const SelectInput: React.FC<SelectInputProps> = ({
           {/* Radio Buttons */}
           <div className="radio-group">
             {options.map((option) => (
-              <label key={option.value} className="radio-label flex items-center mb-2">
+              <label
+                key={option.value}
+                className="radio-label mb-2 flex items-center"
+              >
                 <input
                   type="radio"
                   name={name}
@@ -80,5 +83,5 @@ export const SelectInput: React.FC<SelectInputProps> = ({
         </>
       )}
     </div>
-  )
-}
+  );
+};

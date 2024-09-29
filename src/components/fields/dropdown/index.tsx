@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from "react"
-import { OptionsEditor } from "~/components/fields/optionseditor"
+import React, { useState, useEffect } from "react";
+import { OptionsEditor } from "~/components/fields/optionseditor";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,26 +10,26 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-import { Button } from "~/components/ui/button"
-import { Check, ChevronDown } from "lucide-react"
+} from "~/components/ui/dropdown-menu";
+import { Button } from "~/components/ui/button";
+import { Check, ChevronDown } from "lucide-react";
 
 interface Option {
-  id: string
-  value: string
-  label: string
+  id: string;
+  value: string;
+  label: string;
 }
 
 interface DropdownInputProps {
-  label?: string
-  name?: string
-  value?: string
-  options?: Option[]
-  onChange?: (value: string) => void
-  onLabelChange?: (label: string) => void
-  onOptionsChange?: (options: Option[]) => void
-  isBuilder?: boolean
-  required?: boolean
+  label?: string;
+  name?: string;
+  value?: string;
+  options?: Option[];
+  onChange?: (value: string) => void;
+  onLabelChange?: (label: string) => void;
+  onOptionsChange?: (options: Option[]) => void;
+  isBuilder?: boolean;
+  required?: boolean;
 }
 
 export const DropdownInput: React.FC<DropdownInputProps> = ({
@@ -43,26 +43,28 @@ export const DropdownInput: React.FC<DropdownInputProps> = ({
   isBuilder = false,
   required = false,
 }) => {
-  const [selectedValue, setSelectedValue] = useState(value)
+  const [selectedValue, setSelectedValue] = useState(value);
 
   useEffect(() => {
-    setSelectedValue(value)
-  }, [value])
+    setSelectedValue(value);
+  }, [value]);
 
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onLabelChange?.(e.target.value)
-  }
+    onLabelChange?.(e.target.value);
+  };
 
   const handleOptionsChange = (newOptions: Option[]) => {
-    onOptionsChange?.(newOptions)
-  }
+    onOptionsChange?.(newOptions);
+  };
 
   const handleValueChange = (newValue: string) => {
-    setSelectedValue(newValue)
-    onChange?.(newValue)
-  }
+    setSelectedValue(newValue);
+    onChange?.(newValue);
+  };
 
-  const selectedOption = options.find(option => option.value === selectedValue)
+  const selectedOption = options.find(
+    (option) => option.value === selectedValue,
+  );
 
   return (
     <div className="field mb-4">
@@ -73,7 +75,7 @@ export const DropdownInput: React.FC<DropdownInputProps> = ({
             value={label}
             onChange={handleLabelChange}
             placeholder="Question"
-            className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
+            className="label-input mb-2 block w-full rounded-lg bg-neutral-800 p-2 focus:bg-neutral-700 focus:outline-none"
             required={required}
           />
           <OptionsEditor
@@ -83,7 +85,11 @@ export const DropdownInput: React.FC<DropdownInputProps> = ({
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-full cursor-not-allowed" disabled>
+              <Button
+                variant="outline"
+                className="w-full cursor-not-allowed"
+                disabled
+              >
                 Preview Dropdown
               </Button>
             </DropdownMenuTrigger>
@@ -92,7 +98,10 @@ export const DropdownInput: React.FC<DropdownInputProps> = ({
               <DropdownMenuSeparator />
               <DropdownMenuRadioGroup value="">
                 {options.map((option) => (
-                  <DropdownMenuRadioItem key={option.value} value={option.value}>
+                  <DropdownMenuRadioItem
+                    key={option.value}
+                    value={option.value}
+                  >
                     {option.label}
                   </DropdownMenuRadioItem>
                 ))}
@@ -121,12 +130,20 @@ export const DropdownInput: React.FC<DropdownInputProps> = ({
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel>{label}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuRadioGroup value={selectedValue} onValueChange={handleValueChange}>
+              <DropdownMenuRadioGroup
+                value={selectedValue}
+                onValueChange={handleValueChange}
+              >
                 {options.map((option) => (
-                  <DropdownMenuRadioItem key={option.value} value={option.value}>
-                    <div className="flex items-center justify-between w-full">
+                  <DropdownMenuRadioItem
+                    key={option.value}
+                    value={option.value}
+                  >
+                    <div className="flex w-full items-center justify-between">
                       {option.label}
-                      {option.value === selectedValue && <Check className="h-4 w-4" />}
+                      {option.value === selectedValue && (
+                        <Check className="h-4 w-4" />
+                      )}
                     </div>
                   </DropdownMenuRadioItem>
                 ))}
@@ -136,5 +153,6 @@ export const DropdownInput: React.FC<DropdownInputProps> = ({
         </>
       )}
     </div>
-  )
-}
+  );
+};
+

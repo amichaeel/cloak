@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react"
-import { Checkbox } from "~/components/ui/checkbox"
-import { TrashIcon } from "@radix-ui/react-icons"
+import React, { useState, useEffect } from "react";
+import { Checkbox } from "~/components/ui/checkbox";
+import { TrashIcon } from "@radix-ui/react-icons";
 
 export interface Option {
-  id: string
-  label: string
-  value: string
+  id: string;
+  label: string;
+  value: string;
 }
 
-type ControlType = "checkbox" | "radio" | "none"
+type ControlType = "checkbox" | "radio" | "none";
 
 interface OptionsEditorProps {
-  options?: Option[]
-  onOptionsChange: (options: Option[]) => void
-  controlType?: ControlType
+  options?: Option[];
+  onOptionsChange: (options: Option[]) => void;
+  controlType?: ControlType;
 }
 
 export const OptionsEditor: React.FC<OptionsEditorProps> = ({
@@ -21,41 +21,43 @@ export const OptionsEditor: React.FC<OptionsEditorProps> = ({
   onOptionsChange,
   controlType = "none",
 }) => {
-  const [localOptions, setLocalOptions] = useState<Option[]>(() => options || [])
+  const [localOptions, setLocalOptions] = useState<Option[]>(
+    () => options || [],
+  );
 
   useEffect(() => {
-    setLocalOptions(options || [])
-  }, [options])
+    setLocalOptions(options || []);
+  }, [options]);
 
   const handleOptionChange = (id: string, label: string) => {
     const updatedOptions = localOptions.map((option) =>
-      option.id === id ? { ...option, label } : option
-    )
-    setLocalOptions(updatedOptions)
-    onOptionsChange(updatedOptions)
-  }
+      option.id === id ? { ...option, label } : option,
+    );
+    setLocalOptions(updatedOptions);
+    onOptionsChange(updatedOptions);
+  };
 
   const addOption = () => {
     const newOption = {
       id: Date.now().toString(),
       label: "Option",
       value: `option${localOptions.length + 1}`,
-    }
-    const updatedOptions = [...localOptions, newOption]
-    setLocalOptions(updatedOptions)
-    onOptionsChange(updatedOptions)
-  }
+    };
+    const updatedOptions = [...localOptions, newOption];
+    setLocalOptions(updatedOptions);
+    onOptionsChange(updatedOptions);
+  };
 
   const removeOption = (id: string) => {
-    const updatedOptions = localOptions.filter((option) => option.id !== id)
-    setLocalOptions(updatedOptions)
-    onOptionsChange(updatedOptions)
-  }
+    const updatedOptions = localOptions.filter((option) => option.id !== id);
+    setLocalOptions(updatedOptions);
+    onOptionsChange(updatedOptions);
+  };
 
   return (
     <div className="options-editor">
       {localOptions.map((option) => (
-        <div key={option.id} className="flex items-center mb-2">
+        <div key={option.id} className="mb-2 flex items-center">
           {controlType === "checkbox" && <Checkbox disabled className="mr-2" />}
           {controlType === "radio" && (
             <input type="radio" disabled className="mr-2" />
@@ -64,7 +66,7 @@ export const OptionsEditor: React.FC<OptionsEditorProps> = ({
             type="text"
             value={option.label}
             onChange={(e) => handleOptionChange(option.id, e.target.value)}
-            className="flex-grow border-b border-gray-300 focus:border-black focus:outline-none"
+            className="flex-grow rounded-lg bg-neutral-900 p-2 focus:bg-neutral-700 focus:outline-none"
           />
           <button
             onClick={() => removeOption(option.id)}
@@ -78,5 +80,6 @@ export const OptionsEditor: React.FC<OptionsEditorProps> = ({
         + Add Option
       </button>
     </div>
-  )
-}
+  );
+};
+

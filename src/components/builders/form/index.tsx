@@ -123,8 +123,8 @@ const FormBuilder: React.FC = () => {
   };
 
   return (
-    <div className="form-builder space-y-6">
-      <div className="rounded border p-2">
+    <div className="form-builder space-y-6 text-white">
+      <div className="rounded-xl border-neutral-400 bg-neutral-800 p-4 shadow-xl">
         {/* Form Title */}
         <div className="mb-4">
           <input
@@ -132,17 +132,17 @@ const FormBuilder: React.FC = () => {
             value={formTitle}
             onChange={(e) => setFormTitle(e.target.value)}
             placeholder="Form Title"
-            className="w-full border-b border-gray-300 text-2xl font-bold focus:border-black focus:outline-none"
+            className="w-full rounded-lg border-neutral-300 bg-neutral-800 p-2 text-2xl font-bold focus:bg-neutral-700 focus:outline-none"
           />
         </div>
 
         {/* Form Description */}
-        <div className="mb-6">
+        <div>
           <textarea
             value={formDescription}
             onChange={(e) => setFormDescription(e.target.value)}
             placeholder="Form Description"
-            className="w-full border-b border-gray-300 focus:border-black focus:outline-none"
+            className="w-full rounded-lg bg-neutral-800 p-2 focus:bg-neutral-700 focus:outline-none"
             rows={2}
           />
         </div>
@@ -154,7 +154,7 @@ const FormBuilder: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
+              className="field-wrapper rounded-lg bg-neutral-800 p-4 shadow-xl"
             >
               <TextInput
                 {...field.props}
@@ -194,7 +194,7 @@ const FormBuilder: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
+              className="field-wrapper mb-6 rounded-lg bg-neutral-800 p-4 shadow-xl"
             >
               <TextArea
                 {...field.props}
@@ -234,7 +234,7 @@ const FormBuilder: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
+              className="field-wrapper mb-6 rounded-lg bg-neutral-800 p-4 shadow-lg"
             >
               <NumberInput
                 {...field.props}
@@ -243,7 +243,7 @@ const FormBuilder: React.FC = () => {
                   updateFieldProps(field.id, { label: newLabel })
                 }
               />
-              <div className="mt-2 flex items-center justify-between">
+              <div className="flex items-center justify-between px-2">
                 <div className="flex items-center space-x-2">
                   <label
                     htmlFor={`required-${field.id}`}
@@ -274,7 +274,7 @@ const FormBuilder: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
+              className="field-wrapper rounded-lg bg-neutral-800 p-4 shadow-xl"
             >
               <CheckboxInput
                 {...field.props}
@@ -317,7 +317,7 @@ const FormBuilder: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
+              className="field-wrapper mb-6 rounded-lg bg-neutral-800 p-4 shadow-xl"
             >
               <SliderInput
                 {...field.props}
@@ -360,7 +360,7 @@ const FormBuilder: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
+              className="field-wrapper mb-6 rounded-lg bg-neutral-800 p-4 shadow-xl"
             >
               <SelectInput
                 {...field.props}
@@ -403,7 +403,7 @@ const FormBuilder: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="field-wrapper mb-6 rounded border border-gray-300 p-4"
+              className="field-wrapper mb-6 rounded-lg bg-neutral-800 p-4 shadow-xl"
             >
               <DropdownInput
                 {...field.props}
@@ -449,11 +449,17 @@ const FormBuilder: React.FC = () => {
       </div>
 
       {/* Submit Button */}
-      <div className="flex items-center justify-center">
-        <Button onClick={() => handleSubmit()}>Submit Form</Button>
+      <div className="bg-purp flex items-center justify-center">
+        <Button
+          className="bg-violet-900 hover:bg-violet-800"
+          onClick={() => handleSubmit()}
+        >
+          Submit Form
+        </Button>
       </div>
     </div>
   );
 };
 
 export default FormBuilder;
+

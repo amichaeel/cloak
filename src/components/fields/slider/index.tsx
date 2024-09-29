@@ -1,20 +1,24 @@
 // ~/components/fields/slider.tsx
 
-import React from "react"
-import { Slider } from "~/components/ui/slider"
+import React from "react";
+import { Slider } from "~/components/ui/slider";
 
 interface SliderInputProps {
-  label?: string
-  name?: string
-  value?: number
-  onChange?: (value: number[]) => void
-  onLabelChange?: (label: string) => void
-  isBuilder?: boolean
-  required?: boolean
-  min?: number
-  max?: number
-  step?: number
-  onSettingsChange?: (settings: { min: number; max: number; step: number }) => void
+  label?: string;
+  name?: string;
+  value?: number;
+  onChange?: (value: number[]) => void;
+  onLabelChange?: (label: string) => void;
+  isBuilder?: boolean;
+  required?: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+  onSettingsChange?: (settings: {
+    min: number;
+    max: number;
+    step: number;
+  }) => void;
 }
 
 export const SliderInput: React.FC<SliderInputProps> = ({
@@ -40,10 +44,10 @@ export const SliderInput: React.FC<SliderInputProps> = ({
             value={label}
             onChange={(e) => onLabelChange && onLabelChange(e.target.value)}
             placeholder="Question"
-            className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
+            className="label-input mb-2 block w-full rounded-lg bg-neutral-800 p-2 focus:bg-neutral-700 focus:outline-none"
           />
           {/* Slider Settings */}
-          <div className="flex space-x-2 mb-2">
+          <div className="mb-2 flex space-x-2">
             <div>
               <label className="block text-sm font-medium">Min</label>
               <input
@@ -53,7 +57,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
                   onSettingsChange &&
                   onSettingsChange({ min: Number(e.target.value), max, step })
                 }
-                className="input w-full"
+                className="input w-full bg-neutral-900"
               />
             </div>
             <div>
@@ -65,7 +69,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
                   onSettingsChange &&
                   onSettingsChange({ min, max: Number(e.target.value), step })
                 }
-                className="input w-full"
+                className="input w-full bg-neutral-900"
               />
             </div>
             <div>
@@ -77,7 +81,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
                   onSettingsChange &&
                   onSettingsChange({ min, max, step: Number(e.target.value) })
                 }
-                className="input w-full"
+                className="input w-full bg-neutral-900"
               />
             </div>
           </div>
@@ -113,5 +117,5 @@ export const SliderInput: React.FC<SliderInputProps> = ({
         </>
       )}
     </div>
-  )
-}
+  );
+};

@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react"
-import { Checkbox } from "~/components/ui/checkbox"
+import React, { useState, useEffect } from "react";
+import { Checkbox } from "~/components/ui/checkbox";
 
 interface Option {
-  id: string
-  label: string
-  value: string
+  id: string;
+  label: string;
+  value: string;
 }
 
 interface CheckboxInputProps {
-  label?: string
-  name?: string
-  options?: Option[]
-  values?: string[]
-  onChange?: (selectedOptions: string[]) => void
-  onLabelChange?: (label: string) => void
-  onOptionsChange?: (options: Option[]) => void
-  isBuilder?: boolean
-  required?: boolean
+  label?: string;
+  name?: string;
+  options?: Option[];
+  values?: string[];
+  onChange?: (selectedOptions: string[]) => void;
+  onLabelChange?: (label: string) => void;
+  onOptionsChange?: (options: Option[]) => void;
+  isBuilder?: boolean;
+  required?: boolean;
 }
 
 export const CheckboxInput: React.FC<CheckboxInputProps> = ({
@@ -37,12 +37,12 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
   }, [values]);
 
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onLabelChange?.(e.target.value)
-  }
+    onLabelChange?.(e.target.value);
+  };
 
   const handleOptionsChange = (newOptions: Option[]) => {
-    onOptionsChange?.(newOptions)
-  }
+    onOptionsChange?.(newOptions);
+  };
 
   const handleCheckboxChange = (optionValue: string, checked: boolean) => {
     const newSelectedOptions = checked
@@ -51,10 +51,10 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
 
     setSelectedOptions(newSelectedOptions);
     onChange?.(newSelectedOptions);
-  }
+  };
 
   return (
-    <div className="field mb-4">
+    <div className="field">
       {isBuilder ? (
         <>
           <input
@@ -62,7 +62,7 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
             value={label}
             onChange={handleLabelChange}
             placeholder="Question"
-            className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
+            className="label-input block w-full rounded-lg bg-neutral-800 p-2 focus:bg-neutral-700 focus:outline-none"
           />
           {/* Add your OptionsEditor component here */}
         </>
@@ -73,7 +73,7 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
             {required && <span className="text-red-500"> *</span>}
           </label>
           {options.map((option) => (
-            <div key={option.id} className="flex items-center mb-2">
+            <div key={option.id} className="mb-2 flex items-center">
               <Checkbox
                 id={`${name}-${option.id}`}
                 checked={selectedOptions.includes(option.value)}
@@ -89,5 +89,6 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
         </>
       )}
     </div>
-  )
-}
+  );
+};
+
