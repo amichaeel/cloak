@@ -32,6 +32,7 @@ const FormBuilder: React.FC = () => {
   const [formDescription, setFormDescription] = useState<string>("");
   const [fields, setFields] = useState<FieldConfig[]>([]);
   const [formOutput, setFormOutput] = useState<FormData | null>(null);
+  const [submittedFormId, setSubmittedFormId] = useState<number | null>(null);
 
   const formSubmitMutation = api.form.submit.useMutation();
   const handleSubmit = async () => {
