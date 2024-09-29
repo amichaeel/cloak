@@ -3,7 +3,6 @@ import {
   index,
   integer,
   jsonb,
-  pgTable,
   pgTableCreator,
   primaryKey,
   serial,
@@ -20,27 +19,6 @@ import { type AdapterAccount } from "next-auth/adapters";
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 export const createTable = pgTableCreator((name) => `cloak_${name}`);
-
-// export const posts = createTable(
-//   "post",
-//   {
-//     id: serial("id").primaryKey(),
-//     name: varchar("name", { length: 256 }),
-//     createdById: varchar("created_by", { length: 255 })
-//       .notNull()
-//       .references(() => users.id),
-//     createdAt: timestamp("created_at", { withTimezone: true })
-//       .default(sql`CURRENT_TIMESTAMP`)
-//       .notNull(),
-//     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-//       () => new Date()
-//     ),
-//   },
-//   (example) => ({
-//     createdByIdIdx: index("created_by_idx").on(example.createdById),
-//     nameIndex: index("name_idx").on(example.name),
-//   })
-// );
 
 export const users = createTable("user", {
   id: varchar("id", { length: 255 })
@@ -113,11 +91,15 @@ export const sessions = createTable(
 );
 
 // Forms Table
-export const forms = pgTable("forms", {
+export const forms = createTable("forms", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
   userId: integer("user_id").notNull(),  // Correct field for user reference
+  postData: jsonb('postData').notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+  createdBy: varchar("created_by", { length: 255 })
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
 });
 
 // FormResponses Table

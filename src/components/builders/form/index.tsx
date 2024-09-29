@@ -12,12 +12,14 @@ import { SliderInput } from "~/components/fields/slider";
 import { SelectInput } from "~/components/fields/select";
 import { DropdownInput } from "~/components/fields/dropdown";
 import { Button } from "~/components/ui/button";
+import { formRouter } from "~/server/api/routers/form";
+import { api } from "~/trpc/react";
 import type { Option } from "~/types/option";
 
-interface FieldConfig {
+export interface FieldConfig {
   id: string;
   type: string;
-  props: object;
+  props: Record<string, unknown>;
 }
 
 interface FormData {
@@ -29,17 +31,31 @@ interface FormData {
 const FormBuilder: React.FC = () => {
   const [formTitle, setFormTitle] = useState<string>("Untitled Form");
   const [formDescription, setFormDescription] = useState<string>("");
-
   const [fields, setFields] = useState<FieldConfig[]>([]);
   const [formOutput, setFormOutput] = useState<FormData | null>(null);
 
-  const handleSubmit = () => {
+  const formSubmitMutation = api.form.submit.useMutation();
+  const handleSubmit = async () => {
     const currentFormData: FormData = {
       title: formTitle,
       description: formDescription,
       fields: fields,
     };
-    setFormOutput(currentFormData);
+
+    try {
+      const result = formSubmitMutation.mutate(currentFormData);
+      setFormOutput(currentFormData);
+      console.log("Form saved successfully:", result);
+      // You can add a success message or redirect the user here
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error("Error submitting form:", err.message);
+        // You can show an error message to the user here
+      } else {
+        console.error("Unknown error:", err);
+      }
+      // Set formOutput to null or an error object here to indicate failure
+    }
   };
 
   const addField = (type: string) => {
