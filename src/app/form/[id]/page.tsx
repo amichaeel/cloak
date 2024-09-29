@@ -23,7 +23,7 @@ const FormPage: React.FC = () => {
   }, [data]);
 
   return (
-    <div className="bg-white">
+    <div className="min-h-screen bg-white">
       {error && <div className="text-red-500">{error}</div>}
       {formConfig ? (
         <FormViewer formConfig={formConfig} />
@@ -35,4 +35,3 @@ const FormPage: React.FC = () => {
 };
 
 export default FormPage;
-
