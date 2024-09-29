@@ -8,6 +8,12 @@ import { type Metadata } from "next";
 import { TRPCReactProvider } from "~/trpc/react";
 
 import { getServerAuthSession } from "~/server/auth";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import { Button } from "~/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Cloak",
@@ -31,30 +37,44 @@ async function NavBar() {
             />
           </Link>
         </div>
-        <Link
-          href={session ? "/api/auth/signout" : "/api/auth/signin"}
-          className="rounded-full bg-white/10 px-4 py-2 font-semibold text-white no-underline transition hover:bg-white/20"
-        >
-          {session ? (
-            <Image
-              width={24}
-              height={24}
-              src={
-                session.user.image ? session.user.image : "/cloak-logo-alt.svg"
-              }
-              alt="Profile settings"
-              className="rounded-full"
-            ></Image>
-          ) : (
-            <Image
-              width={24}
-              height={24}
-              src="https://avatars.githubusercontent.com/u/76508651?v=4&w=48&q=75"
-              alt="Profile settings"
-              className="rounded-full"
-            ></Image>
-          )}
-        </Link>
+        {session ? (
+          <Popover>
+            <PopoverTrigger className="rounded-full bg-white/10 px-4 py-2 font-semibold text-white no-underline transition hover:bg-white/20">
+              <Image
+                width={24}
+                height={24}
+                src={
+                  session.user.image
+                    ? session.user.image
+                    : "/cloak-logo-alt.svg"
+                }
+                alt="Profile settings"
+                className="rounded-full"
+              ></Image>
+            </PopoverTrigger>
+            <PopoverContent className="grid w-48 gap-2 rounded-3xl border-none bg-white/15 p-4 text-white shadow-2xl backdrop-blur-lg">
+              <Link
+                href="/dashboard"
+                className="w-full rounded-2xl px-4 py-2 transition-all hover:bg-white/20"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/api/auth/signout"
+                className="w-full rounded-2xl px-4 py-2 transition-all hover:bg-white/20"
+              >
+                Sign out
+              </Link>
+            </PopoverContent>
+          </Popover>
+        ) : (
+          <Link
+            href="/api/auth/signin"
+            className="rounded-full bg-white/10 px-4 py-2 font-semibold text-white no-underline transition hover:bg-white/20"
+          >
+            Sign in
+          </Link>
+        )}
       </nav>
     </div>
   );
