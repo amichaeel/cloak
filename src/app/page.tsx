@@ -73,8 +73,6 @@ export default async function Home() {
               </li>
             </ul>
           </div>
-
-          <TextGeneration />
         </div>
       </main>
     </HydrateClient>
