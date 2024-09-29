@@ -11,11 +11,16 @@ export default async function Home() {
   const session = await getServerAuthSession();
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+      <main className="flex antialiased min-h-screen flex-col items-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Welcome to Cloak
-          </h1>
+          <div className="text-center antialiased flex text-5xl font-extrabold tracking-tight sm:text-[5rem]">
+            <h1>
+              Welcome to
+            </h1>
+            <h1 className="ml-4 text-gradient">
+              Cloak
+            </h1>
+          </div>
           <p className="max-w-4xl text-center cursor-default text-xl">
             For <b>truly accurate</b> forms, you must promise respondent{" "}
             <span className="blur-sm transition-all hover:blur-none">
