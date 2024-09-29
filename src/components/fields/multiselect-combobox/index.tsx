@@ -31,7 +31,7 @@ interface MultiSelectComboboxProps {
   name: string
   values: string[]
   options: Option[]
-  onChange: (values: string[]) => void
+  onChange?: (values: string[]) => void
   required?: boolean
   isDisabled?: boolean
 }
@@ -41,7 +41,6 @@ export const MultiSelectCombobox: React.FC<MultiSelectComboboxProps> = ({
   values,
   options,
   onChange,
-  required = false,
   isDisabled = false,
 }) => {
   const [open, setOpen] = React.useState(false)
@@ -52,9 +51,9 @@ export const MultiSelectCombobox: React.FC<MultiSelectComboboxProps> = ({
   )
 
   const toggleValue = (value: string) => {
-    if (values.includes(value)) {
+    if (values.includes(value) && onChange) {
       onChange(values.filter((v) => v !== value))
-    } else {
+    } else if (onChange) {
       onChange([...values, value])
     }
   }

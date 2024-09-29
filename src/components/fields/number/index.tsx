@@ -4,8 +4,8 @@ import React from "react"
 import { Input } from "~/components/ui/input"
 
 interface NumberInputProps {
-  label: string
-  name: string
+  label?: string
+  name?: string
   value?: number
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onLabelChange?: (label: string) => void

@@ -4,8 +4,8 @@ import React from "react"
 import { Textarea } from "~/components/ui/textarea"
 
 interface TextAreaProps {
-  label: string
-  name: string
+  label?: string
+  name?: string
   value?: string
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   onLabelChange?: (label: string) => void

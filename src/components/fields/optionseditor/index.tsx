@@ -1,11 +1,8 @@
-// ~/components/fields/optionseditor.tsx
-
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Checkbox } from "~/components/ui/checkbox"
-import { RadioGroupItem } from "~/components/ui/radio-group"
 import { TrashIcon } from "@radix-ui/react-icons"
 
-interface Option {
+export interface Option {
   id: string
   label: string
   value: string
@@ -14,17 +11,21 @@ interface Option {
 type ControlType = "checkbox" | "radio" | "none"
 
 interface OptionsEditorProps {
-  options: Option[]
+  options?: Option[]
   onOptionsChange: (options: Option[]) => void
   controlType?: ControlType
 }
 
 export const OptionsEditor: React.FC<OptionsEditorProps> = ({
-  options,
+  options = [],
   onOptionsChange,
   controlType = "none",
 }) => {
-  const [localOptions, setLocalOptions] = useState<Option[]>(options)
+  const [localOptions, setLocalOptions] = useState<Option[]>(() => options || [])
+
+  useEffect(() => {
+    setLocalOptions(options || [])
+  }, [options])
 
   const handleOptionChange = (id: string, label: string) => {
     const updatedOptions = localOptions.map((option) =>

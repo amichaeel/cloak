@@ -1,5 +1,3 @@
-// ~/components/fields/checkbox.tsx
-
 import React from "react"
 import { Checkbox } from "~/components/ui/checkbox"
 import { OptionsEditor } from "~/components/fields/optionseditor"
@@ -11,9 +9,9 @@ interface Option {
 }
 
 interface CheckboxInputProps {
-  label: string
-  name: string
-  options: Option[]
+  label?: string
+  name?: string
+  options?: Option[]
   selectedOptions?: string[]
   onChange?: (selectedOptions: string[]) => void
   onLabelChange?: (label: string) => void
@@ -23,9 +21,9 @@ interface CheckboxInputProps {
 }
 
 export const CheckboxInput: React.FC<CheckboxInputProps> = ({
-  label,
-  name,
-  options,
+  label = "",
+  name = "",
+  options = [],
   selectedOptions = [],
   onChange,
   onLabelChange,
@@ -33,6 +31,23 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
   isBuilder = false,
   required = false,
 }) => {
+  const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onLabelChange?.(e.target.value)
+  }
+
+  const handleOptionsChange = (newOptions: Option[]) => {
+    onOptionsChange?.(newOptions)
+  }
+
+  const handleCheckboxChange = (optionValue: string, checked: boolean) => {
+    if (onChange) {
+      const newSelectedOptions = checked
+        ? [...selectedOptions, optionValue]
+        : selectedOptions.filter((val) => val !== optionValue)
+      onChange(newSelectedOptions)
+    }
+  }
+
   return (
     <div className="field mb-4">
       {isBuilder ? (
@@ -40,13 +55,13 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
           <input
             type="text"
             value={label}
-            onChange={(e) => onLabelChange && onLabelChange(e.target.value)}
+            onChange={handleLabelChange}
             placeholder="Question"
             className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
           />
           <OptionsEditor
             options={options}
-            onOptionsChange={() => onOptionsChange}
+            onOptionsChange={handleOptionsChange}
             controlType="checkbox"
           />
         </>
@@ -61,14 +76,9 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
               <Checkbox
                 id={`${name}-${option.id}`}
                 checked={selectedOptions.includes(option.value)}
-                onCheckedChange={(checked) => {
-                  if (onChange) {
-                    const newSelectedOptions = checked
-                      ? [...selectedOptions, option.value]
-                      : selectedOptions.filter((val) => val !== option.value)
-                    onChange(newSelectedOptions)
-                  }
-                }}
+                onCheckedChange={(checked) =>
+                  handleCheckboxChange(option.value, checked as boolean)
+                }
               />
               <label htmlFor={`${name}-${option.id}`} className="ml-2">
                 {option.label}

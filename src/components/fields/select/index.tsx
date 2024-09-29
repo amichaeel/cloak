@@ -15,10 +15,10 @@ interface Option {
 }
 
 interface SelectInputProps {
-  label: string
-  name: string
+  label?: string
+  name?: string
   value?: string
-  options: Option[]
+  options?: Option[]
   onChange?: (value: string) => void
   onLabelChange?: (label: string) => void
   onOptionsChange?: (options: Option[]) => void
@@ -70,7 +70,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
-              {options.map((option) => (
+              {options?.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
                 </SelectItem>

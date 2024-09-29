@@ -9,10 +9,10 @@ interface Option {
 }
 
 interface DropdownInputProps {
-  label: string
-  name: string
+  label?: string
+  name?: string
   values?: string[]
-  options: Option[]
+  options?: Option[]
   onChange?: (values: string[]) => void
   onLabelChange?: (label: string) => void
   onOptionsChange?: (options: Option[]) => void
@@ -21,57 +21,63 @@ interface DropdownInputProps {
 }
 
 export const DropdownInput: React.FC<DropdownInputProps> = ({
-  label,
-  name,
+  label = "",
+  name = "",
   values = [],
-  options,
+  options = [],
   onChange,
   onLabelChange,
   onOptionsChange,
   isBuilder = false,
   required = false,
 }) => {
+  const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onLabelChange?.(e.target.value)
+  }
+
+  const handleOptionsChange = (newOptions: Option[]) => {
+    onOptionsChange?.(newOptions)
+  }
+
   return (
     <div className="field mb-4">
-      <input
-        type="text"
-        value={label}
-        onChange={(e) => onLabelChange && onLabelChange(e.target.value)}
-        placeholder="Question"
-        className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
-      />
+      {isBuilder ? (
+        <input
+          type="text"
+          value={label}
+          onChange={handleLabelChange}
+          placeholder="Question"
+          className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
+        />
+      ) : (
+        <label className="label mb-2 block font-medium">
+          {label}
+          {required && <span className="text-red-500">*</span>}
+        </label>
+      )}
       {isBuilder ? (
         <>
-          {/* Use controlType="none" to avoid displaying checkboxes */}
           <OptionsEditor
             options={options}
-            onOptionsChange={() => onOptionsChange}
+            onOptionsChange={handleOptionsChange}
             controlType="none"
           />
-          {/* Render a disabled MultiSelectCombobox for visual representation */}
           <MultiSelectCombobox
             name={name}
             values={values}
             options={options.map(({ value, label }) => ({ value, label }))}
-            onChange={() => { }}
             required={required}
             isDisabled={true}
           />
         </>
       ) : (
-        <>
-          <label className="label mb-2 block font-medium">
-            {label}
-            {required && <span className="text-red-500">*</span>}
-          </label>
-          <MultiSelectCombobox
-            name={name}
-            values={values}
-            options={options.map(({ value, label }) => ({ value, label }))}
-            onChange={() => onChange}
-            required={required}
-          />
-        </>
+        <MultiSelectCombobox
+          name={name}
+          values={values}
+          options={options.map(({ value, label }) => ({ value, label }))}
+          onChange={onChange}
+          required={required}
+        />
       )}
     </div>
   )

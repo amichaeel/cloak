@@ -4,23 +4,22 @@ import React, { useState } from "react"
 import { TextInput } from "~/components/fields/input"
 import { TextArea } from "~/components/fields/textarea"
 import { NumberInput } from "~/components/fields/number"
-import { DateInput } from "~/components/fields/datepicker"
 import { FieldSelector } from "~/components/fields/fieldselector"
 import { Cross1Icon } from "@radix-ui/react-icons"
 import { Switch } from "~/components/ui/switch"
 import { CheckboxInput } from "~/components/fields/checkbox"
-import { DateRangeInput } from "~/components/fields/daterange"
 import { SliderInput } from "~/components/fields/slider"
 import { SelectInput } from "~/components/fields/select"
 import { DropdownInput } from "~/components/fields/dropdown"
 import { Button } from "~/components/ui/button"
-import type { DateRange } from "react-day-picker"
+import type { Option } from "~/types/option"
 
 interface FieldConfig {
   id: string
   type: string
-  props: any
+  props: object
 }
+
 
 const FormBuilder: React.FC = () => {
   const [formTitle, setFormTitle] = useState<string>("Untitled Form")
@@ -33,7 +32,6 @@ const FormBuilder: React.FC = () => {
     const baseProps = {
       id,
       name: `${type}_${fields.length + 1}`,
-      label: "Enter your question here",
       required: false,
     }
 
@@ -44,7 +42,7 @@ const FormBuilder: React.FC = () => {
       specificProps = {
         value: undefined,
         onChange: (date: Date | undefined) => {
-          // Placeholder for onChange, not used in builder
+          updateFieldProps(id, { value: date })
         },
       }
     }
@@ -59,7 +57,7 @@ const FormBuilder: React.FC = () => {
           },
         ],
         selectedOptions: [],
-        onOptionsChange: (options: any) => {
+        onOptionsChange: (options: Option) => {
           updateFieldProps(id, { options })
         },
       }
@@ -71,7 +69,7 @@ const FormBuilder: React.FC = () => {
       props: {
         ...baseProps,
         ...specificProps,
-        onChange: (e: any) => {
+        onChange: (_e: React.FormEvent<HTMLInputElement>) => {
           // Placeholder for onChange, not used in builder
         },
       },
@@ -80,9 +78,9 @@ const FormBuilder: React.FC = () => {
     setFields([...fields, newField])
   }
 
-  const updateFieldProps = (id: string, newProps: any) => {
-    setFields((prevFields) =>
-      prevFields.map((field) =>
+  const updateFieldProps = (id: string, newProps: object) => {
+    setFields((prevFields: FieldConfig[]) =>
+      prevFields.map((field: FieldConfig) =>
         field.id === id
           ? { ...field, props: { ...field.props, ...newProps } }
           : field
@@ -121,7 +119,7 @@ const FormBuilder: React.FC = () => {
       </div>
 
       {/* Render Fields */}
-      {fields.map((field) => {
+      {fields.map((field: FieldConfig) => {
         if (field.type === "text") {
           return (
             <div
@@ -145,7 +143,7 @@ const FormBuilder: React.FC = () => {
                   </label>
                   <Switch
                     id={`required-${field.id}`}
-                    checked={field.props.required}
+                    checked={(field.props as { required: boolean }).required}
                     onCheckedChange={(checked: boolean) =>
                       updateFieldProps(field.id, { required: checked })
                     }
@@ -184,7 +182,7 @@ const FormBuilder: React.FC = () => {
                   </label>
                   <Switch
                     id={`required-${field.id}`}
-                    checked={field.props.required}
+                    checked={(field.props as { required: boolean }).required}
                     onCheckedChange={(checked: boolean) =>
                       updateFieldProps(field.id, { required: checked })
                     }
@@ -223,46 +221,7 @@ const FormBuilder: React.FC = () => {
                   </label>
                   <Switch
                     id={`required-${field.id}`}
-                    checked={field.props.required}
-                    onCheckedChange={(checked: boolean) =>
-                      updateFieldProps(field.id, { required: checked })
-                    }
-                  />
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
-                  <Cross1Icon />
-                </Button>
-              </div>
-            </div>
-          )
-        } else if (field.type === "date") {
-          return (
-            <div
-              key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
-            >
-              <DateInput
-                {...field.props}
-                isBuilder={true}
-                onLabelChange={(newLabel: string) =>
-                  updateFieldProps(field.id, { label: newLabel })
-                }
-              />
-              <div className="flex justify-between items-center mt-2">
-                <div className="flex items-center space-x-2">
-                  <label
-                    htmlFor={`required-${field.id}`}
-                    className="text-sm font-medium"
-                  >
-                    Required
-                  </label>
-                  <Switch
-                    id={`required-${field.id}`}
-                    checked={field.props.required}
+                    checked={(field.props as { required: boolean }).required}
                     onCheckedChange={(checked: boolean) =>
                       updateFieldProps(field.id, { required: checked })
                     }
@@ -304,46 +263,7 @@ const FormBuilder: React.FC = () => {
                   </label>
                   <Switch
                     id={`required-${field.id}`}
-                    checked={field.props.required}
-                    onCheckedChange={(checked: boolean) =>
-                      updateFieldProps(field.id, { required: checked })
-                    }
-                  />
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full p-2"
-                  onClick={() => removeField(field.id)}>
-                  <Cross1Icon />
-                </Button>
-              </div>
-            </div>
-          )
-        } else if (field.type === "dateRange") {
-          return (
-            <div
-              key={field.id}
-              className="field-wrapper mb-6 p-4 border border-gray-300 rounded"
-            >
-              <DateRangeInput
-                {...field.props}
-                isBuilder={true}
-                onLabelChange={(newLabel: string) =>
-                  updateFieldProps(field.id, { label: newLabel })
-                }
-              />
-              <div className="flex justify-between items-center mt-2">
-                <div className="flex items-center space-x-2">
-                  <label
-                    htmlFor={`required-${field.id}`}
-                    className="text-sm font-medium"
-                  >
-                    Required
-                  </label>
-                  <Switch
-                    id={`required-${field.id}`}
-                    checked={field.props.required}
+                    checked={(field.props as { required: boolean }).required}
                     onCheckedChange={(checked: boolean) =>
                       updateFieldProps(field.id, { required: checked })
                     }
@@ -385,7 +305,7 @@ const FormBuilder: React.FC = () => {
                   </label>
                   <Switch
                     id={`required-${field.id}`}
-                    checked={field.props.required}
+                    checked={(field.props as { required: boolean }).required}
                     onCheckedChange={(checked: boolean) =>
                       updateFieldProps(field.id, { required: checked })
                     }
@@ -427,7 +347,7 @@ const FormBuilder: React.FC = () => {
                   </label>
                   <Switch
                     id={`required-${field.id}`}
-                    checked={field.props.required}
+                    checked={(field.props as { required: boolean }).required}
                     onCheckedChange={(checked: boolean) =>
                       updateFieldProps(field.id, { required: checked })
                     }
@@ -466,7 +386,7 @@ const FormBuilder: React.FC = () => {
                   </label>
                   <Switch
                     id={`required-${field.id}`}
-                    checked={field.props.required}
+                    checked={(field.props as { required: boolean }).required}
                     onCheckedChange={(checked: boolean) =>
                       updateFieldProps(field.id, { required: checked })
                     }

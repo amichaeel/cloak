@@ -4,8 +4,8 @@ import React from "react"
 import { Slider } from "~/components/ui/slider"
 
 interface SliderInputProps {
-  label: string
-  name: string
+  label?: string
+  name?: string
   value?: number
   onChange?: (value: number[]) => void
   onLabelChange?: (label: string) => void
@@ -84,7 +84,6 @@ export const SliderInput: React.FC<SliderInputProps> = ({
           {/* Disabled Slider */}
           <Slider
             value={[value]}
-            onValueChange={() => { }}
             min={min}
             max={max}
             step={step}
