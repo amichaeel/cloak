@@ -125,9 +125,9 @@ const FormViewer: React.FC<{ formConfig: FormConfig }> = ({ formConfig }) => {
           <DropdownInput
             label={label}
             name={name}
-            values={formData[name] as string[] || []}
+            value={formData[name] as string || ''}
             options={options ?? []}
-            onChange={(values: string[]) => handleInputChange(name, values)}
+            onChange={(values: string) => handleInputChange(name, values)}
             required={required}
           />
         );
