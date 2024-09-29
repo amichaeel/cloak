@@ -12,7 +12,6 @@ import { SliderInput } from "~/components/fields/slider";
 import { SelectInput } from "~/components/fields/select";
 import { DropdownInput } from "~/components/fields/dropdown";
 import { Button } from "~/components/ui/button";
-import { formRouter } from "~/server/api/routers/form";
 import { api } from "~/trpc/react";
 import type { Option } from "~/types/option";
 
@@ -453,16 +452,6 @@ const FormBuilder: React.FC = () => {
       <div className="flex items-center justify-center">
         <Button onClick={() => handleSubmit()}>Submit Form</Button>
       </div>
-
-      {/* Form Data Output */}
-      {formOutput && (
-        <div className="mt-6 rounded bg-gray-100 p-4">
-          <h3 className="mb-2 text-lg font-semibold">Form Data:</h3>
-          <pre className="overflow-x-auto whitespace-pre-wrap">
-            {JSON.stringify(formOutput, null, 2)}
-          </pre>
-        </div>
-      )}
     </div>
   );
 };

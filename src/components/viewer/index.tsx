@@ -20,7 +20,6 @@ interface Option {
 interface FieldConfig {
   id: string;
   type: string;
-  question: string;
   props: {
     id: string;
     name: string;
@@ -47,12 +46,12 @@ const FormViewer: React.FC<{ formConfig: FormConfig }> = ({ formConfig }) => {
   };
 
   const renderField = (field: FieldConfig) => {
-    const { type, question, props } = field;
+    const { type, props } = field;
     const { id, name, required, label, options } = props;
 
     const fieldWrapper = (component: React.ReactNode) => (
       <div key={id} className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">{question}</h3>
+        <h3 className="text-lg font-semibold mb-2">{props.label}</h3>
         {component}
       </div>
     );

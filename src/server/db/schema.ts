@@ -94,7 +94,7 @@ export const sessions = createTable(
 export const forms = createTable("forms", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
-  userId: integer("user_id").notNull(),  // Correct field for user reference
+  userId: integer("user_id"),  // Correct field for user reference
   postData: jsonb('postData').notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull(),
   createdBy: varchar("created_by", { length: 255 })
