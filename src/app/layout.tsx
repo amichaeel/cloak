@@ -46,7 +46,13 @@ async function NavBar() {
               className="rounded-full"
             ></Image>
           ) : (
-            "Sign in"
+            <Image
+              width={24}
+              height={24}
+              src="https://avatars.githubusercontent.com/u/76508651?v=4&w=48&q=75"
+              alt="Profile settings"
+              className="rounded-full"
+            ></Image>
           )}
         </Link>
       </nav>
