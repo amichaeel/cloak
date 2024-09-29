@@ -20,11 +20,13 @@ CREATE TABLE IF NOT EXISTS "cloak_form_response" (
 	"response_data" jsonb NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "forms" (
+CREATE TABLE IF NOT EXISTS "cloak_forms" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" varchar(255) NOT NULL,
-	"user_id" integer NOT NULL,
-	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+	"user_id" integer,
+	"postData" jsonb NOT NULL,
+	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"created_by" varchar(255) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "cloak_session" (
@@ -55,7 +57,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "cloak_form_response" ADD CONSTRAINT "cloak_form_response_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "cloak_form_response" ADD CONSTRAINT "cloak_form_response_form_id_cloak_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."cloak_forms"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "cloak_forms" ADD CONSTRAINT "cloak_forms_created_by_cloak_user_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."cloak_user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
