@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 
 // import { LatestPost } from "~/app/_components/post";
@@ -9,20 +8,21 @@ import TextGeneration from "./_components/ai";
 export default async function Home() {
   // const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
+
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+      <main className="flex min-h-screen flex-col items-center text-white">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
           <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
             Welcome to Cloak
           </h1>
-          <p className="max-w-4xl text-center cursor-default text-xl">
+          <p className="max-w-4xl cursor-default text-center text-xl">
             For <b>truly accurate</b> forms, you must promise respondent{" "}
             <span className="blur-sm transition-all hover:blur-none">
               anonymity.
             </span>
           </p>
-          <div className="flex max-w-3xl flex-col items-center justify-between rounded-md bg-gray-700 bg-opacity-30 bg-clip-padding p-8 backdrop-blur-2xl backdrop-filter">
+          <div className="flex max-w-3xl flex-col items-center justify-between rounded-2xl bg-gray-500 bg-opacity-30 bg-clip-padding p-8 backdrop-blur-2xl backdrop-filter">
             <h2 className="mb-6 text-2xl font-bold">Why choose Cloak?</h2>
             <ul className="space-y-4 text-lg">
               <li className="flex items-start">
