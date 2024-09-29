@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer utilities {
+  .text-gradient {
+    background-image: linear-gradient(127deg, #747474, #ffffff 35%, #979797);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
