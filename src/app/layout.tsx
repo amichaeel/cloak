@@ -68,31 +68,12 @@ async function NavBar() {
             </PopoverContent>
           </Popover>
         ) : (
-          <Popover>
-            <PopoverTrigger className="rounded-full bg-white/10 px-4 py-2 font-semibold text-white no-underline transition hover:bg-white/20">
-              <Image
-                width={24}
-                height={24}
-                src="/cloak-logo-alt.svg"
-                alt="Profile settings"
-                className="rounded-full"
-              ></Image>
-            </PopoverTrigger>
-            <PopoverContent className="grid w-48 gap-2 rounded-3xl border-none bg-white/20 p-4 text-white shadow-[0_35px_60px_-15px_rgba(1,1,1,0.5)] backdrop-blur-lg">
-              <Link
-                href="/dashboard"
-                className="w-full rounded-2xl px-4 py-2 transition-all hover:bg-white/20"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/api/auth/signout"
-                className="w-full rounded-2xl px-4 py-2 transition-all hover:bg-white/20"
-              >
-                Sign out
-              </Link>
-            </PopoverContent>
-          </Popover>
+          <Link
+            href="/api/auth/signin"
+            className="rounded-full bg-white/10 px-4 py-2 font-semibold text-white no-underline transition hover:bg-white/20"
+          >
+            Sign in
+          </Link>
         )}
       </nav>
     </div>
