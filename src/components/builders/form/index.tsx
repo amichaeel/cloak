@@ -69,7 +69,7 @@ const FormBuilder: React.FC = () => {
       props: {
         ...baseProps,
         ...specificProps,
-        onChange: (_e: React.FormEvent<HTMLInputElement>) => {
+        onChange: (e: React.FormEvent<HTMLInputElement>) => {
           // Placeholder for onChange, not used in builder
         },
       },

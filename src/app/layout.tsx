@@ -48,11 +48,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+    <html lang="en" className={`${GeistSans.variable} bg-gradient-to-b from-[#2e026d] to-[#15162c]`}>
+      <body className="min-h-screen flex-col items-center justify-center">
         <TRPCReactProvider>
           <NavBar />
-          {children}
+          <div className="mt-24">
+            {children}
+          </div>
         </TRPCReactProvider>
       </body>
     </html>
