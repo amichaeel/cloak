@@ -57,7 +57,6 @@ export const SelectInput: React.FC<SelectInputProps> = ({
       ) : (
         <>
           <label className="label mb-2 block font-medium">
-            {label}
             {required && <span className="text-red-500">*</span>}
           </label>
           <Select

@@ -51,8 +51,7 @@ export const DropdownInput: React.FC<DropdownInputProps> = ({
         />
       ) : (
         <label className="label mb-2 block font-medium">
-          {label}
-          {required && <span className="text-red-500">*</span>}
+          {required && <span className="text-red-500">Required</span>}
         </label>
       )}
       {isBuilder ? (

@@ -36,7 +36,6 @@ export const NumberInput: React.FC<NumberInputProps> = ({
       ) : (
         // Static label for end-users
         <label htmlFor={name} className="label mb-2 block font-medium">
-          {label}
           {required && <span className="text-red-500">*</span>}
         </label>
       )}

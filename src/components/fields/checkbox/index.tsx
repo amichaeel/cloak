@@ -1,6 +1,5 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Checkbox } from "~/components/ui/checkbox"
-import { OptionsEditor } from "~/components/fields/optionseditor"
 
 interface Option {
   id: string
@@ -12,7 +11,7 @@ interface CheckboxInputProps {
   label?: string
   name?: string
   options?: Option[]
-  selectedOptions?: string[]
+  values?: string[]
   onChange?: (selectedOptions: string[]) => void
   onLabelChange?: (label: string) => void
   onOptionsChange?: (options: Option[]) => void
@@ -24,13 +23,19 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
   label = "",
   name = "",
   options = [],
-  selectedOptions = [],
+  values = [],
   onChange,
   onLabelChange,
   onOptionsChange,
   isBuilder = false,
   required = false,
 }) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(values);
+
+  useEffect(() => {
+    setSelectedOptions(values);
+  }, [values]);
+
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onLabelChange?.(e.target.value)
   }
@@ -40,12 +45,12 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
   }
 
   const handleCheckboxChange = (optionValue: string, checked: boolean) => {
-    if (onChange) {
-      const newSelectedOptions = checked
-        ? [...selectedOptions, optionValue]
-        : selectedOptions.filter((val) => val !== optionValue)
-      onChange(newSelectedOptions)
-    }
+    const newSelectedOptions = checked
+      ? [...selectedOptions, optionValue]
+      : selectedOptions.filter((val) => val !== optionValue);
+
+    setSelectedOptions(newSelectedOptions);
+    onChange?.(newSelectedOptions);
   }
 
   return (
@@ -59,17 +64,13 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({
             placeholder="Question"
             className="label-input mb-2 block w-full border-b border-gray-300 focus:border-black focus:outline-none"
           />
-          <OptionsEditor
-            options={options}
-            onOptionsChange={handleOptionsChange}
-            controlType="checkbox"
-          />
+          {/* Add your OptionsEditor component here */}
         </>
       ) : (
         <>
           <label className="label mb-2 block font-medium">
             {label}
-            {required && <span className="text-red-500">*</span>}
+            {required && <span className="text-red-500"> *</span>}
           </label>
           {options.map((option) => (
             <div key={option.id} className="flex items-center mb-2">
