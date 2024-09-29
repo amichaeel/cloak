@@ -34,8 +34,7 @@ export const TextInput: React.FC<TextInputProps> = ({
       ) : (
         // Static label for end-users
         <label htmlFor={name} className="label mb-2 block font-medium">
-          {label}
-          {required && <span className="text-red-500">*</span>}
+          {required && <span className="text-red-500">Required</span>}
         </label>
       )}
       <Input

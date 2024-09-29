@@ -95,8 +95,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
         // End-user view
         <>
           <label className="label mb-2 block font-medium">
-            {label}
-            {required && <span className="text-red-500">*</span>}
+            {required && <span className="text-red-500">Required</span>}
           </label>
           <div className="flex items-center space-x-4">
             <span>{min}</span>
