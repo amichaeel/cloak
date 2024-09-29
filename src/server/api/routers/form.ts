@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { forms } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { sql } from "drizzle-orm";
@@ -17,6 +21,37 @@ const FormDataSchema = z.object({
 });
 
 export const formRouter = createTRPCRouter({
+  getFormData: publicProcedure
+    .input(z.object({ formId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      try {
+        const result = await ctx.db
+          .select({
+            postData: forms.postData,
+          })
+          .from(forms)
+          .where(sql`${forms.id} = ${input.formId}`)
+          .limit(1);
+
+        if (result.length === 0) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Form not found",
+          });
+        }
+
+        return result[0]?.postData;
+      } catch (error) {
+        console.error("Error retrieving form data:", error);
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An error occurred while retrieving the form data",
+        });
+      }
+    }),
   submit: protectedProcedure
     .input(FormDataSchema)
     .mutation(async ({ ctx, input }) => {

@@ -16,7 +16,7 @@ export default async function Home() {
           </div>
           <p className="max-w-4xl cursor-default text-center text-xl">
             For <b>truly accurate</b> forms, you must promise respondent{" "}
-            <span className="blur-none transition-all md:blur-sm md:hover:blur-none">
+            <span className="blur-sm transition-all hover:blur-none">
               anonymity.
             </span>
           </p>
