@@ -30,7 +30,7 @@ interface FieldConfig {
   };
 }
 
-interface FormConfig {
+export interface FormConfig {
   title: string;
   description: string;
   fields: FieldConfig[];

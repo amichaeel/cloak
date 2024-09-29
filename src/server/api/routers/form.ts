@@ -7,6 +7,7 @@ import {
 import { forms } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { sql } from "drizzle-orm";
+import { FormConfig } from "~/components/viewer";
 
 const FormFieldSchema = z.object({
   id: z.string(),
@@ -40,7 +41,7 @@ export const formRouter = createTRPCRouter({
           });
         }
 
-        return result[0]?.postData;
+        return result[0]?.postData as FormConfig;
       } catch (error) {
         console.error("Error retrieving form data:", error);
         if (error instanceof TRPCError) {
