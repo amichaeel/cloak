@@ -138,7 +138,11 @@ const formConfig = {
 }
 
 const FormPage: React.FC = () => {
-  return <FormViewer formConfig={formConfig} />;
+  return (
+    <div className='bg-white'>
+      <FormViewer formConfig={formConfig} />
+    </div>
+  );
 };
 
 export default FormPage;
