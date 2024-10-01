@@ -33,7 +33,15 @@ export const TextArea: React.FC<TextAreaProps> = ({
     setIsLoading(true);
     try {
       const result = await openaiMutation.mutateAsync({
-        prompt: `Professionalize the following text: ${value}`,
+        prompt: `Rewrite the following text to maintain its core message and sentiment, while:
+                  1. Removing any personally identifiable information (PII) such as names, specific locations, or unique personal experiences.
+                  2. Standardizing the vocabulary and writing style to a neutral, professional tone.
+                  3. Preserving the general opinion and feedback expressed.
+                  4. Ensuring the response remains relevant to a workplace or educational context.
+
+                  Original text: ${value}
+
+                  Please provide a rewritten version that adheres to these guidelines.`,
       });
 
       if (onChange) {
@@ -92,4 +100,3 @@ export const TextArea: React.FC<TextAreaProps> = ({
     </div>
   );
 };
-
